@@ -70,7 +70,7 @@ class PositionAim:
     horizontal = 0
     depth = 0
 
-    def __repr__(self, str):
+    def __repr__(self) -> str:
         return f"horizontal: {self.horizontal} \ndepth: {self.depth}"
 
 
@@ -78,7 +78,13 @@ def get_position_part_b(data: List[Direction]) -> PositionAim:
     p = PositionAim()
 
     for direction in data:
-        
+        if direction.depth():
+            p.aim += direction.val * direction.cmd.cmd
+        else:
+            p.horizontal += direction.val
+            p.depth += (p.aim * direction.val)
+
+    return p
 
 test_input = """forward 5
 down 5
@@ -87,7 +93,13 @@ up 3
 down 8
 forward 2"""
 
-# file_to_array("day2_input")
 
-# print(get_output_part_a(arr_to_type(test_input.split("\n"))))
-print(get_output_part_a(arr_to_type(read_data("day2_input"))))
+
+# print(get_position_part_a(arr_to_type(test_input.split("\n"))))
+# print(get_position_part_b(arr_to_type(test_input.split("\n"))))
+
+
+print(get_position_part_a(arr_to_type(read_data("day2_input"))))
+
+print("---")
+print(get_position_part_b(arr_to_type(read_data("day2_input"))))
